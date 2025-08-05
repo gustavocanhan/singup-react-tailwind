@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: oklch(28.2% 0.091 267.935);
+}
