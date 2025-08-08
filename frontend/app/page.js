@@ -9,28 +9,83 @@ export default function Home() {
   const [confirmeEmail, setConfirmeEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [confirmeSenha, setConfirmeSenha] = useState("");
-  const [mensagemErro, setMensagemErro] = useState("");
 
-  setMensagemErro("a");
+  const [erroNome, setErroNome] = useState("");
+  const [erroSobrenome, setErroSobrenome] = useState("");
+  const [erroEmail, setErroEmail] = useState("");
+  const [erroConfirmeEmail, setErroConfirmeEmail] = useState("");
+  const [erroSenha, setErroSenha] = useState("");
+  const [erroConfirmeSenha, setErroConfirmeSenha] = useState("");
 
-  const verificaCampos = () => {
+  const verificaCampoPreenchido = () => {
+    let status = true;
+
     if (nome === "") {
-      setMensagemErro("Preencha o campo NOME");
-    } else if (sobrenome === "") {
-      setMensagemErro("Preencha o campo SOBRENOME");
-    } else if (email === "") {
-      setMensagemErro("Preencha o campo E-MAIL");
-    } else if (confirmeEmail === "") {
-      setMensagemErro("Preencha o campo CONFIRME E-MAIL");
+      setErroNome("Preencha o campo nome");
+      status = false;
+    } else {
+      setErroNome("");
+    }
+
+    if (sobrenome === "") {
+      setErroSobrenome("Preencha o campo sobrenome");
+      status = false;
+    } else {
+      setErroSobrenome("");
+    }
+
+    if (email === "") {
+      setErroEmail("Preencha o campo e-mail");
+      status = false;
+    } else {
+      setErroEmail("");
+    }
+    if (confirmeEmail === "") {
+      setErroConfirmeEmail("Preencha o campo confirme e-mail");
+      status = false;
+    } else {
+      setErroConfirmeEmail("");
+    }
+
+    if (senha === "") {
+      setErroSenha("Preencha o campo senha");
+    } else {
+      setErroSenha("");
+    }
+
+    if (confirmeSenha === "") {
+      setErroConfirmeSenha("Preencha o campo confirme senha");
+      status = false;
+    } else {
+      setErroConfirmeSenha("");
+    }
+
+    return status;
+  };
+
+  const verificaCamposIguais = () => {
+    if (email !== confirmeEmail) {
+      setErroEmail("Os e-mails informados não coincidem.");
+      setErroConfirmeEmail("Os e-mails informados não coincidem.");
+    } else {
+      setErroEmail("");
+      setErroConfirmeEmail("");
+    }
+
+    if (senha !== confirmeSenha) {
+      setErroSenha("As senhas informadas não coincidem.");
+      setErroConfirmeSenha("As senhas informadas não coincidem.");
+    } else {
+      setErroSenha("");
+      setErroConfirmeSenha("");
     }
   };
 
   const enviaFormulario = (e) => {
     e.preventDefault();
-    if (verificaCampos()) {
-      alert("Enviado");
-    } else {
-      alert("Não enviado!\nEmails digitados não confere");
+    let statusCamposPreenchido = verificaCampoPreenchido();
+    if (statusCamposPreenchido) {
+      verificaCamposIguais();
     }
   };
 
@@ -50,9 +105,10 @@ export default function Home() {
               onChange={(e) => setNome(e.target.value)}
             />
             <small className="flex flex-row items-center gap-1 mt-1 ml-1 text-red-600">
-              {mensagemErro && (
+              {erroNome && (
                 <>
-                  {mensagemErro} <IoWarningOutline />
+                  <IoWarningOutline />
+                  {erroNome}
                 </>
               )}
             </small>
@@ -65,7 +121,14 @@ export default function Home() {
               id="sobrenone"
               onChange={(e) => setSobrenome(e.target.value)}
             />
-            <small>erro</small>
+            <small className="flex flex-row items-center gap-1 mt-1 ml-1 text-red-600">
+              {erroSobrenome && (
+                <>
+                  <IoWarningOutline />
+                  {erroSobrenome}
+                </>
+              )}
+            </small>
           </div>
         </div>
         <input
@@ -75,7 +138,14 @@ export default function Home() {
           id="email"
           onChange={(e) => setEmail(e.target.value)}
         />
-        <small>erro</small>
+        <small className="flex flex-row items-center gap-1 mt-1 ml-1 text-red-600">
+          {erroEmail && (
+            <>
+              <IoWarningOutline />
+              {erroEmail}
+            </>
+          )}
+        </small>
         <input
           type="email"
           placeholder="Confirme e-mail"
@@ -83,7 +153,14 @@ export default function Home() {
           id="confirmeEmail"
           onChange={(e) => setConfirmeEmail(e.target.value)}
         />
-        <small>erro</small>
+        <small className="flex flex-row items-center gap-1 mt-1 ml-1 text-red-600">
+          {erroConfirmeEmail && (
+            <>
+              <IoWarningOutline />
+              {erroConfirmeEmail}
+            </>
+          )}
+        </small>
         <input
           type="password"
           placeholder="Senha"
@@ -91,7 +168,14 @@ export default function Home() {
           id="senha"
           onChange={(e) => setSenha(e.target.value)}
         />
-        <small>erro</small>
+        <small className="flex flex-row items-center gap-1 mt-1 ml-1 text-red-600">
+          {erroSenha && (
+            <>
+              <IoWarningOutline />
+              {erroSenha}
+            </>
+          )}
+        </small>
         <input
           type="password"
           placeholder="Confirme senha"
@@ -99,7 +183,14 @@ export default function Home() {
           id="confirmeSenha"
           onChange={(e) => setConfirmeSenha(e.target.value)}
         />
-        <small>erro</small>
+        <small className="flex flex-row items-center gap-1 mt-1 ml-1 text-red-600">
+          {erroConfirmeSenha && (
+            <>
+              <IoWarningOutline />
+              {erroConfirmeSenha}
+            </>
+          )}
+        </small>
         <button
           type="submit"
           className="bg-indigo-950 text-white py-1.5 mt-2 mb-1 rounded-sm hover:bg-indigo-500 transition duration-300 ease-in-out cursor-pointer"
