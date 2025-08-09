@@ -10,82 +10,100 @@ export default function Home() {
   const [senha, setSenha] = useState("");
   const [confirmeSenha, setConfirmeSenha] = useState("");
 
-  const [erroNome, setErroNome] = useState("");
-  const [erroSobrenome, setErroSobrenome] = useState("");
-  const [erroEmail, setErroEmail] = useState("");
-  const [erroConfirmeEmail, setErroConfirmeEmail] = useState("");
-  const [erroSenha, setErroSenha] = useState("");
-  const [erroConfirmeSenha, setErroConfirmeSenha] = useState("");
+  const [mensagemErro, setmensagemErro] = useState("");
 
   const verificaCampoPreenchido = () => {
-    let status = true;
+    let estaPreenchido = true;
+    const mensagem = "Preencha o campo";
 
-    if (nome === "") {
-      setErroNome("Preencha o campo nome");
-      status = false;
+    if (nome.trim() === "") {
+      setmensagemErro(mensagem);
+      estaPreenchido = false;
     } else {
-      setErroNome("");
+      setmensagemErro("");
     }
 
-    if (sobrenome === "") {
-      setErroSobrenome("Preencha o campo sobrenome");
-      status = false;
+    if (sobrenome.trim() === "") {
+      setmensagemErro(mensagem);
+      estaPreenchido = false;
     } else {
-      setErroSobrenome("");
+      setmensagemErro("");
     }
 
-    if (email === "") {
-      setErroEmail("Preencha o campo e-mail");
-      status = false;
+    if (email.trim() === "") {
+      setmensagemErro(mensagem);
+      estaPreenchido = false;
     } else {
-      setErroEmail("");
-    }
-    if (confirmeEmail === "") {
-      setErroConfirmeEmail("Preencha o campo confirme e-mail");
-      status = false;
-    } else {
-      setErroConfirmeEmail("");
+      setmensagemErro("");
     }
 
-    if (senha === "") {
-      setErroSenha("Preencha o campo senha");
+    if (confirmeEmail.trim() === "") {
+      setmensagemErro(mensagem);
+      estaPreenchido = false;
     } else {
-      setErroSenha("");
+      setmensagemErro("");
     }
 
-    if (confirmeSenha === "") {
-      setErroConfirmeSenha("Preencha o campo confirme senha");
-      status = false;
+    if (senha.trim() === "") {
+      setmensagemErro(mensagem);
+      estaPreenchido = false;
     } else {
-      setErroConfirmeSenha("");
+      setmensagemErro("");
     }
 
-    return status;
+    if (confirmeSenha.trim() === "") {
+      setmensagemErro(mensagem);
+      estaPreenchido = false;
+    } else {
+      setmensagemErro("");
+    }
+
+    return estaPreenchido;
   };
 
-  const verificaCamposIguais = () => {
-    if (email !== confirmeEmail) {
-      setErroEmail("Os e-mails informados não coincidem.");
-      setErroConfirmeEmail("Os e-mails informados não coincidem.");
+  const verificaCamposIguaisEmail = () => {
+    let estaCampoIguais = true;
+    const mensagem = "Os e-mails informados não coincidem.";
+
+    if (
+      email.trim() !== "" &&
+      confirmeEmail.trim() !== "" &&
+      email.trim() !== confirmeEmail.trim()
+    ) {
+      setmensagemErro(mensagem);
+      estaCampoIguais = false;
     } else {
-      setErroEmail("");
-      setErroConfirmeEmail("");
+      setmensagemErro("");
     }
 
-    if (senha !== confirmeSenha) {
-      setErroSenha("As senhas informadas não coincidem.");
-      setErroConfirmeSenha("As senhas informadas não coincidem.");
+    return estaCampoIguais;
+  };
+
+  const verificaCamposIguaisSenha = () => {
+    let estaCamposIguais = true;
+    const mensagem = "As senhas informadas não coincidem.";
+
+    if (
+      senha.trim() !== "" &&
+      confirmeSenha.trim() !== "" &&
+      senha.trim() !== confirmeSenha.trim()
+    ) {
+      setmensagemErro(mensagem);
+      estaCamposIguais = false;
     } else {
-      setErroSenha("");
-      setErroConfirmeSenha("");
+      setmensagemErro("");
     }
+
+    return estaCamposIguais;
   };
 
   const enviaFormulario = (e) => {
     e.preventDefault();
-    let statusCamposPreenchido = verificaCampoPreenchido();
-    if (statusCamposPreenchido) {
-      verificaCamposIguais();
+
+    if (verificaCampoPreenchido()) {
+      if (verificaCamposIguaisEmail() && verificaCamposIguaisSenha()) {
+        alert("Enviado");
+      }
     }
   };
 
@@ -105,10 +123,10 @@ export default function Home() {
               onChange={(e) => setNome(e.target.value)}
             />
             <small className="flex flex-row items-center gap-1 mt-1 ml-1 text-red-600">
-              {erroNome && (
+              {mensagemErro && (
                 <>
                   <IoWarningOutline />
-                  {erroNome}
+                  {mensagemErro}
                 </>
               )}
             </small>
@@ -122,10 +140,10 @@ export default function Home() {
               onChange={(e) => setSobrenome(e.target.value)}
             />
             <small className="flex flex-row items-center gap-1 mt-1 ml-1 text-red-600">
-              {erroSobrenome && (
+              {mensagemErro && (
                 <>
                   <IoWarningOutline />
-                  {erroSobrenome}
+                  {mensagemErro}
                 </>
               )}
             </small>
@@ -139,10 +157,10 @@ export default function Home() {
           onChange={(e) => setEmail(e.target.value)}
         />
         <small className="flex flex-row items-center gap-1 mt-1 ml-1 text-red-600">
-          {erroEmail && (
+          {mensagemErro && (
             <>
               <IoWarningOutline />
-              {erroEmail}
+              {mensagemErro}
             </>
           )}
         </small>
@@ -154,10 +172,10 @@ export default function Home() {
           onChange={(e) => setConfirmeEmail(e.target.value)}
         />
         <small className="flex flex-row items-center gap-1 mt-1 ml-1 text-red-600">
-          {erroConfirmeEmail && (
+          {mensagemErro && (
             <>
               <IoWarningOutline />
-              {erroConfirmeEmail}
+              {mensagemErro}
             </>
           )}
         </small>
@@ -169,10 +187,10 @@ export default function Home() {
           onChange={(e) => setSenha(e.target.value)}
         />
         <small className="flex flex-row items-center gap-1 mt-1 ml-1 text-red-600">
-          {erroSenha && (
+          {mensagemErro && (
             <>
               <IoWarningOutline />
-              {erroSenha}
+              {mensagemErro}
             </>
           )}
         </small>
@@ -184,10 +202,10 @@ export default function Home() {
           onChange={(e) => setConfirmeSenha(e.target.value)}
         />
         <small className="flex flex-row items-center gap-1 mt-1 ml-1 text-red-600">
-          {erroConfirmeSenha && (
+          {mensagemErro && (
             <>
               <IoWarningOutline />
-              {erroConfirmeSenha}
+              {mensagemErro}
             </>
           )}
         </small>
